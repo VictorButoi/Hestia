@@ -6,7 +6,8 @@ const express = require('express'),
     session = require("express-session"),
     passport = require('passport'),
     mongoose = require('mongoose'),
-    LocalStrategy = require("passport-local").Strategy;
+    LocalStrategy = require("passport-local").Strategy,
+    HttpStatus = require('http-status-codes');
 
 /**
  * START GLOBALS
@@ -114,6 +115,8 @@ routescan(app, {
     ignoreInvalid: true
 });
 
-// app.use(errors.notFound, errors.handler);
+app.use((req, res, next) => {
+    res.sendStatus(HttpStatus.NOT_FOUND);
+})
 
 module.exports = app;
