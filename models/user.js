@@ -11,6 +11,7 @@ let userSchema = new mongoose.Schema({
     email: {type: String, required: true, unique: true},
     cellPhoneNum: {type: String, required: true, unique: true},
     userGroup: {type: [String], required: false}, /*ADMIN, DRIVER, CLIENT, etc...*/
+    zipCode: {type: Number, required: true},
     created: {type: Date, required: true, default: Date.now}
 }, {collection: 'hestia_users'});
 

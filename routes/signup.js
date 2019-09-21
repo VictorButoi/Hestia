@@ -9,7 +9,8 @@ module.exports = {
                 password: req.body.password,
                 email: req.body.email,
                 cellPhoneNum: req.body.cellPhoneNum,
-                userGroup: req.body.userGroup
+                userGroup: req.body.userGroup,
+                zipCode: req.body.zipCode
             };
 
             let user = new User(options);
