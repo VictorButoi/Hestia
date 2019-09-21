@@ -47,7 +47,7 @@ console.info('Running in ' + _env + ' environment.');
 /**
  * ESTABLISH DATABASE CONNECTION
  */
-const url = 'mongodb+srv://admin687:admin687!@cluster0-au5yo.gcp.mongodb.net/hestia?retryWrites=true&w=majority';
+const url = 'mongodb+srv://admin:admin123@cluster0-au5yo.mongodb.net/hestia?retryWrites=true&w=majority';
 console.info('Attempting to connect to', url);
 mongoose.connect(url);
 mongoose.connection.on('connected', function () {
