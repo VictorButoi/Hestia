@@ -14,6 +14,8 @@ let assignmentSchema = new mongoose.Schema({
         required: true
     },
     pending: { type: Boolean, required: false, default: true },
+    numRiders: { type: Number, required: false, default: 0 },
+    maxNumRiders: { type: Number, required: false, default: 4 },
     created: {type: Date, required: true, default: Date.now}
 }, {collection: 'hestia_assignments'});
 
