@@ -8,6 +8,8 @@ lerna-debug.log*
 
 node_modules/
 
+__pycache__/
+
 .vscode/
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
