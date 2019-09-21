@@ -11,5 +11,17 @@
     "url": "https://github.coecis.cornell.edu/vib9/Hestia.git"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.17.1",
+    "express-routescan": "^0.2.1",
+    "express-session": "^1.16.2",
+    "mongoose": "^5.7.1",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "shortid": "^2.2.15",
+    "string-format": "^2.0.0"
+  }
 }
