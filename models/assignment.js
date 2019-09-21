@@ -4,7 +4,16 @@ const mongoose = require('mongoose'),
 let assignmentSchema = new mongoose.Schema({
     _id: {type: String, default: shortid.generate},
     driver: {type: String, ref: 'User', required: true},
-    event: {type: {eventId: String, address: String, required: true}},
+    event: {
+        type: {
+            eventId: String,
+            address: String,
+            latitude: Number,
+            longitude: Number
+        },
+        required: true
+    },
+    pending: { type: Boolean, required: false, default: true },
     created: {type: Date, required: true, default: Date.now}
 }, {collection: 'hestia_assignments'});
 

@@ -1,4 +1,4 @@
-const User = require(_base + 'models/user');
+const User = require(_base + 'models/driver');
 
 module.exports = {
     '/api/signup': {
