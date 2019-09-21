@@ -1,0 +1,15 @@
+{
+  "name": "hestia",
+  "version": "1.0.0",
+  "description": "Drive Share Effort for Natural Disaster Relief",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.coecis.cornell.edu/vib9/Hestia.git"
+  },
+  "author": "",
+  "license": "ISC"
+}
