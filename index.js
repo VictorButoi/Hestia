@@ -7,7 +7,8 @@ const express = require('express'),
     passport = require('passport'),
     mongoose = require('mongoose'),
     LocalStrategy = require("passport-local").Strategy,
-    HttpStatus = require('http-status-codes');
+    HttpStatus = require('http-status-codes'),
+    User = require('./models/user');
 
 /**
  * START GLOBALS
