@@ -13,6 +13,7 @@ const express = require('express'),
  * START GLOBALS
  */
 global._base = __dirname + '/';
+global.HttpStatus = HttpStatus;
 
 console.info = function (message) {
     console.log('[INFO] ' + message);
@@ -45,7 +46,7 @@ console.info('Running in ' + _env + ' environment.');
 /**
  * ESTABLISH DATABASE CONNECTION
  */
-const url = 'mongodb+srv://admin687:admin687!@cluster0-au5yo.gcp.mongodb.net/test?retryWrites=true&w=majority';
+const url = 'mongodb+srv://admin687:admin687!@cluster0-au5yo.gcp.mongodb.net/hestia?retryWrites=true&w=majority';
 console.info('Attempting to connect to', url);
 mongoose.connect(url);
 mongoose.connection.on('connected', function () {
