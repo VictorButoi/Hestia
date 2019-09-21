@@ -1,5 +1,7 @@
 import requests
 from geopy.geocoders import Nominatim
+from pymongo import MongoClient
+from pprint import pprint
 
 class Event:
 
@@ -51,7 +53,19 @@ for item in events:
         events.remove(item)
         del item
 
+print("\n")
+print("connecting to database...")
+# connect to MongoDB, change the << MONGODB URL >> to reflect your own connection string
+client = MongoClient("mongodb://admin:admin123@cluster0-shard-00-00-au5yo.mongodb.net:27017,cluster0-shard-00-01-au5yo.mongodb.net:27017,cluster0-shard-00-02-au5yo.mongodb.net:27017/hestia?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority")
+db = client.hestia
+driver_collection = db.hestia_users
+assignment_collection = db.hestia_assignments
+print("\n")
+for x in driver_collection.find():
+  print(x["zipCode"])
 
 
 
-#we have to query database to get drivers, and see if any are compatible with event zipcodes
+for ii in assignment_collection.find():
+    print(ii)
+
