@@ -7,9 +7,10 @@ module.exports = {
 
             // Id of assignment to accept
             let id  = req.body._id;
+            let maxNumRiders = req.body.maxNumRiders;
 
-            if (!id) {
-                return res.json({error: 'You must provide an assignment ID to accept.'});
+            if (!id || !maxNumRiders) {
+                return res.json({error: 'You must provide an assignment ID and max num riders to accept.'});
             }
 
             if (!req.user) {
@@ -26,6 +27,7 @@ module.exports = {
                 if (asgn.driver !== userId) return res.json({ error: 'You are not assigned to specified assignment.' });
                 // Update assignment to not be pending
                 asgn.pending = false;
+                asgn.maxNumRiders = maxNumRiders;
                 asgn.save((err) => {
                     if (err) console.debug('Error with updating assignment to pending=false!');
                     res.json({message: 'Success'});
