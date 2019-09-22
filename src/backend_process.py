@@ -34,7 +34,8 @@ def main():
         params={
             "country": "US",
             "rank_level": 5,
-            "category": ["severe-weather"]
+            "category": "severe-weather",
+            "state": "active"
         }
     )
 
@@ -47,6 +48,8 @@ def main():
     geolocator = Nominatim()
 
     for ii in events:
+        print(ii.desc)
+
         new_loc = str(ii.location[1]) + ", " + str(ii.location[0])
         location = geolocator.reverse(new_loc)
         ii.address=location
@@ -60,10 +63,12 @@ def main():
         if(not(item.zipcode.isdigit())):
             events.remove(item)
             del item
+        else:
+            print(item.zipcode)
 
     print("\n")
     print("connecting to database...")
-    # connect to MongoDB, change the << MONGODB URL >> to reflect your own connection string
+    # connect to MongoDB
     client = MongoClient("mongodb://admin:admin123@cluster0-shard-00-00-au5yo.mongodb.net:27017,cluster0-shard-00-01-au5yo.mongodb.net:27017,cluster0-shard-00-02-au5yo.mongodb.net:27017/hestia?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority")
     db = client.hestia
     driver_collection = db.hestia_users
@@ -91,11 +96,11 @@ def main():
                     
                     assignment_collection.insert_one(assigned_driver)
     
-    time.sleep(30)
+    time.sleep(2)
     eliminate_done(assignment_collection)
-    time.sleep(30)
+    time.sleep(2)
     eliminate_done(assignment_collection)
-    time.sleep(30)
+    time.sleep(2)
     eliminate_done(assignment_collection)
 
 if __name__ == "__main__":
