@@ -81,19 +81,26 @@ def main():
 
         for (event,zipcode) in drive_zip:
 
-            if driver_zipcode == zipcode:
+            if driver_zipcode == int(zipcode):
+
 
                 if(dict(filter(lambda z: z["_id"] == x["_id"], assignment_collection.find())) == {}):
                 
                     assigned_driver = { 
                     '_id': x["_id"],  
-                    'driver': x["driver"],
-                    'event': {'eventId': event["id"], 'address': event["address"]}, 
+                    'driver': x["fullName"],
+                    'event': {'eventId': event.id, 'address': str(event.address)}, 
                     'created': datetime.datetime.now(),
                     'pending': True
                     }
+
+                    print("hit")
                     
                     assignment_collection.insert_one(assigned_driver)
+
+                    for x in assignment_collection.find():
+                        print(x["fullName"])
+
     
     time.sleep(2)
     eliminate_done(assignment_collection)
