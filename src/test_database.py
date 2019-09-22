@@ -7,10 +7,7 @@ db = client.hestia
 driver_collection = db.hestia_users
 assignment_collection = db.hestia_assignments
 
-for x in driver_collection.find():
-    print(x["fullName"])
-
-print("this is right")
-
 for x in assignment_collection.find():
     print(x["fullName"])
+
+#assignment_collection.remove( { } )

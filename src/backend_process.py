@@ -2,14 +2,15 @@ import requests
 from geopy.geocoders import Nominatim
 from pymongo import MongoClient
 from pprint import pprint
+import numpy as np
 import datetime
 import time
 
 class Event:
     #'within' is not in results dictionary
-    def __init__(self, rank, id, title, desc, category, entities, location, state, duration):
+    def __init__(self, rank, ID, title, desc, category, entities, location, state, duration):
         self.rank = rank
-        self.id = id
+        self.ID = ID
         self.title = title
         self.desc = desc
         self.category = category
@@ -23,6 +24,35 @@ class Event:
 def eliminate_done(assignment_collection):
     myquery = {"pending": True}
     assignment_collection.delete_many(myquery)
+
+#dtakes in (xlong,ylat) which is center of square. ef assignLocation:
+def assignLocation(x,y,drivers):
+    #1 degree of longitude ~=~ 55.051 miles?
+    #l is length of squares in degrees???
+    l = 3/55.051
+    
+    a = np.sqrt(drivers)
+    
+    long_array = np.linspace(start = x-l/2, stop = x+l/2, num = a)
+    random_squarex = np.random.randint(a)
+    random_squarey = np.random.randint(a)
+    x_coord = (long_array[random_squarex]+long_array[random_squarey])/2
+    
+    
+
+#sida is number of regions inside the squaredef aain():
+    #find x value
+    #y_array=np.li
+    #one degree of longitude = 55.051 miles?????nspace(start = 0, end = , num = a)
+
+def get_locs (events, database):
+    locs = {}
+    for event in events:
+        myquery = {"zipCode": event.zipcode}
+        results = database.find(myquery)
+        locs.update( {event.zipcode : assignLocation(event.location[0],event.location[1], len(results))} )
+    return locs
+        
 
 def main():
     response = requests.get(
@@ -73,6 +103,8 @@ def main():
     driver_collection = db.hestia_users
     assignment_collection = db.hestia_assignments
 
+    locations = get_locs(events, driver_collection)
+
     print("\n")
     for x in driver_collection.find():
         driver_zipcode = x["zipCode"]
@@ -82,25 +114,29 @@ def main():
         for (event,zipcode) in drive_zip:
 
             if driver_zipcode == int(zipcode):
+                
+                isIn = False
 
-
-                if(dict(filter(lambda z: z["_id"] == x["_id"], assignment_collection.find())) == {}):
+                for z in assignment_collection.find():
+                    if z["_id"] == x["_id"]:
+                        isIn = True
+                        
+                if(not isIn):
                 
                     assigned_driver = { 
                     '_id': x["_id"],  
                     'driver': x["fullName"],
-                    'event': {'eventId': event.id, 'address': str(event.address)}, 
+                    'event': {'eventId': event.ID, 
+                              'address': str(event.address),
+                              'latitude': locations[event.zipcode][0][0],
+                              'longitude': locations[event.zipcode][0][1]}, 
                     'created': datetime.datetime.now(),
                     'pending': True
                     }
+                    locations[event.zipcode].pop(0)
 
-                    print("hit")
-                    
                     assignment_collection.insert_one(assigned_driver)
-
-                    for x in assignment_collection.find():
-                        print(x["fullName"])
-
+                    
     
     time.sleep(2)
     eliminate_done(assignment_collection)
