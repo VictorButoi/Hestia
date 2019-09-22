@@ -20,7 +20,11 @@ class Event:
         self.duration = duration
         self.zipcode = ""
         self.address = ""
-    
+
+def eliminate_done(assignment_collection):
+    myquery = {"pending": True}
+    assignment_collection.delete_many(myquery)
+
 def main():
     response = requests.get(
         url="https://api.predicthq.com/v1/events/",
@@ -87,19 +91,15 @@ def main():
                     }
                     
                     assignment_collection.insert_one(assigned_driver)
-
-def eliminate_done():
     
-    print('hi')
+    time.sleep(300)
+    eliminate_done(assignment_collection)
+    time.sleep(300)
+    eliminate_done(assignment_collection)
+    time.sleep(300)
+    eliminate_done(assignment_collection)
 
 if __name__ == "__main__":
-    main()
-    while(False):
+    while(True):
         main()
-        time.sleep(300)
-        eliminate_done()
-        time.sleep(300)
-        eliminate_done()
-        time.sleep(300)
-        eliminate_done()
         
