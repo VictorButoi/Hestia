@@ -1,6 +1,7 @@
 import requests
 from geopy.geocoders import Nominatim
 from pymongo import MongoClient
+from scipy.ndimage.interpolation import shift
 from pprint import pprint
 import numpy as np
 import datetime
@@ -25,23 +26,31 @@ def eliminate_done(assignment_collection):
     time.sleep(2)
     myquery = {"pending": True}
     assignment_collection.delete_many(myquery)
-
+    
 #dtakes in (xlong,ylat) which is center of square. ef assignLocation:
 def assignLocation(x,y,drivers):
     tuple_list = list()
-    #1 degree of longitude ~=~ 55.051 miles?
+    #1 degree of longitude ~=~ 55.051 miles? assuming latitude is the same
     #l is length of the square in degrees
-    l = 3/55.051
-
+    l = 10/55.051
     #number of sub-squares
     a = np.sqrt(drivers)
-    long_array = np.linspace(start = x-l/2, stop = x+l/2, num = a)
-    lat_array = np.linspace(start = y-l/2, stop = y+l/2, num = a)
-    for _ in drivers:
-        random_squarex = np.random.randint(a)
-        random_squarey = np.random.randint(a)
-        xc = (long_array[random_squarex]+long_array[random_squarex-1])/2
-        yc = (lat_array[random_squarey]+lat_array[random_squarey-1])/2
+
+    long_array = np.linspace(start = x-l/2, stop = x+l/2, num = a+1)
+    long_array1 = shift(long_array,-1,cval=0)
+    long_array = (long_array+long_array1)/2
+    long_array = np.resize(long_array,(1,int(a))).flatten()
+
+    lat_array = np.linspace(start = y-l/2, stop = y+l/2, num = a+1)
+    lat_array1 = shift(lat_array,-1,cval=0)
+    lat_array = (lat_array+lat_array1)/2
+    lat_array = np.resize(lat_array,(1,int(a))).flatten()
+
+    for _ in range(drivers):
+        random_squarex = np.random.randint(int(a))
+        random_squarey = np.random.randint(int(a))
+        xc = long_array[random_squarex]
+        yc = lat_array[random_squarey]
         driver_tuple = (xc, yc)
         tuple_list.append(driver_tuple)
     return tuple_list
@@ -54,9 +63,9 @@ def assignLocation(x,y,drivers):
 def get_locs (events, database):
     locs = {}
     for event in events:
-        myquery = {"zipCode": event.zipcode}
-        results = database.find(myquery)
-        locs.update( {event.zipcode : assignLocation(event.location[0],event.location[1], len(results))} )
+        myquery = {"zipCode": int(event.zipcode)}
+        results = database.count_documents(myquery)
+        locs.update( {event.zipcode : assignLocation(event.location[0],event.location[1], results)} )
     return locs
 
 def main():
@@ -93,10 +102,7 @@ def main():
         ii.zipcode=zipcode
 
     #remove events without zipcodes
-    for item in events:
-        if(not(item.zipcode.isdigit())):
-            events.remove(item)
-            del item
+    filtered_events = list(filter(lambda x: x.zipcode.isdigit(), events))
 
     print("\n")
     print("connecting to database...")
@@ -106,13 +112,13 @@ def main():
     driver_collection = db.hestia_users
     assignment_collection = db.hestia_assignments
 
-    locations = get_locs(events, driver_collection)
+    locations = get_locs(filtered_events, driver_collection)
 
     print("\n")
     for x in driver_collection.find():
         driver_zipcode = x["zipCode"]
 
-        drive_zip = [(y, y.zipcode) for y in events]
+        drive_zip = [(y, y.zipcode) for y in filtered_events]
 
         for (event,zipcode) in drive_zip:
 
