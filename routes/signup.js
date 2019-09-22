@@ -19,7 +19,7 @@ module.exports = {
                     return res.status(HttpStatus.BAD_REQUEST).json({error: 'Mongoose error: duplicate key, invalid field types, etc.'});
                 }
 
-                let message = "Signed up " + newUser.fullName + " with id " + newUser._id + " and roles " + newUser.userGroup.join(', ');
+                let message = "Signed up " + newUser.fullName + " with id " + newUser._id;
 
                 res.json({ message: message});
                 
