@@ -6,7 +6,6 @@ import datetime
 import time
 
 class Event:
-
     #'within' is not in results dictionary
     def __init__(self, rank, id, title, desc, category, entities, location, state, duration):
         self.rank = rank
@@ -92,14 +91,15 @@ def main():
                     
                     assignment_collection.insert_one(assigned_driver)
     
-    time.sleep(300)
+    time.sleep(30)
     eliminate_done(assignment_collection)
-    time.sleep(300)
+    time.sleep(30)
     eliminate_done(assignment_collection)
-    time.sleep(300)
+    time.sleep(30)
     eliminate_done(assignment_collection)
 
 if __name__ == "__main__":
-    while(True):
+    main()
+    while(False):
         main()
         
