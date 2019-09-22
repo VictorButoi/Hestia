@@ -27,16 +27,23 @@ def eliminate_done(assignment_collection):
 
 #dtakes in (xlong,ylat) which is center of square. ef assignLocation:
 def assignLocation(x,y,drivers):
+    tuple_list = list()
     #1 degree of longitude ~=~ 55.051 miles?
-    #l is length of squares in degrees???
+    #l is length of the square in degrees
     l = 3/55.051
-    
+
+    #number of sub-squares
     a = np.sqrt(drivers)
-    
     long_array = np.linspace(start = x-l/2, stop = x+l/2, num = a)
-    random_squarex = np.random.randint(a)
-    random_squarey = np.random.randint(a)
-    x_coord = (long_array[random_squarex]+long_array[random_squarey])/2
+    lat_array = np.linspace(start = y-l/2, stop = y+l/2, num = a)
+    for _ in drivers:
+        random_squarex = np.random.randint(a)
+        random_squarey = np.random.randint(a)
+        xc = (long_array[random_squarex]+long_array[random_squarex-1])/2
+        yc = (lat_array[random_squarey]+lat_array[random_squarey-1])/2
+        driver_tuple = (xc, yc)
+        tuple_list.append(driver_tuple)
+    return tuple_list
     
     
 
@@ -92,8 +99,6 @@ def main():
         if(not(item.zipcode.isdigit())):
             events.remove(item)
             del item
-        else:
-            print(item.zipcode)
 
     print("\n")
     print("connecting to database...")
