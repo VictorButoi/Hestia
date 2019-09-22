@@ -17,7 +17,7 @@ module.exports = {
                 asgn.save(err => {
                     if (err) return console.error(err);
                     res.json({ message: asgn.numRiders });
-                })
+                });
             });
         }
     }

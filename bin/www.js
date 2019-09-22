@@ -5,7 +5,7 @@
  */
 
 var app = require('../index');
-var debug = require('debug')('csf-tutoring:server');
+var debug = require('debug')('bigred:server');
 var http = require('http');
 
 /**
