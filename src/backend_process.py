@@ -48,7 +48,6 @@ def main():
     geolocator = Nominatim()
 
     for ii in events:
-        print(ii.desc)
 
         new_loc = str(ii.location[1]) + ", " + str(ii.location[0])
         location = geolocator.reverse(new_loc)
