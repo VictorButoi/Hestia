@@ -22,6 +22,7 @@ class Event:
         self.address = ""
 
 def eliminate_done(assignment_collection):
+    time.sleep(2)
     myquery = {"pending": True}
     assignment_collection.delete_many(myquery)
 
@@ -44,8 +45,6 @@ def assignLocation(x,y,drivers):
         driver_tuple = (xc, yc)
         tuple_list.append(driver_tuple)
     return tuple_list
-    
-    
 
 #sida is number of regions inside the squaredef aain():
     #find x value
@@ -59,7 +58,6 @@ def get_locs (events, database):
         results = database.find(myquery)
         locs.update( {event.zipcode : assignLocation(event.location[0],event.location[1], len(results))} )
     return locs
-        
 
 def main():
     response = requests.get(
@@ -142,13 +140,9 @@ def main():
 
                     assignment_collection.insert_one(assigned_driver)
                     
-    
-    time.sleep(2)
-    eliminate_done(assignment_collection)
-    time.sleep(2)
-    eliminate_done(assignment_collection)
-    time.sleep(2)
-    eliminate_done(assignment_collection)
+    #Moved delay to method
+    for _ in range(3):
+        eliminate_done(assignment_collection)
 
 if __name__ == "__main__":
     main()
