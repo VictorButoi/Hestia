@@ -15,8 +15,7 @@ module.exports = {
     '/api/login/success': {
         methods: ['get'],
         fn: function (req, res, next) {
-            console.debug('User has logged in!!');
-            res.redirect('/api/session');
+            res.json({message: 'Success.'})
         }
     },
     '/api/login/fail': {
